@@ -17,7 +17,7 @@ body {
 }
 
 .app {
-    flow: horizontal;
+    flow: vertical;
     size: *;
 }
 
@@ -27,7 +27,6 @@ body {
 }
 
 .left-pane {
-    width: 200px;
     height: *;
     background: color(bg);
     border-right: color(border) 1px solid;
@@ -141,7 +140,7 @@ span.clear-input:hover {
 }
 
 .right-pane {
-    size: *;
+    size: auto;
     background: color(gray-bg);
 }
 
@@ -151,6 +150,7 @@ span.clear-input:hover {
     border-spacing: 1.6em;
     size: *;
     flow: vertical;
+    display: none;
 }
 
 @media platform == "OSX" {
@@ -333,6 +333,7 @@ div.install-me, div.trust-me {
     padding: 20px;
     color: white;
     background: linear-gradient(left,#e242bc,#f4727c);
+    display: none;
 }
 
 div.trust-me > div:nth-child(1),

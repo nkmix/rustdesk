@@ -7,6 +7,7 @@ use std::{
     path::{Path, PathBuf},
     sync::{Mutex, RwLock},
     time::{Duration, Instant, SystemTime},
+    env,
 };
 
 use anyhow::Result;
@@ -547,6 +548,18 @@ impl Config {
         store |= store1;
         let mut id_valid = false;
         let (id, encrypted, store2) = decrypt_str_or_original(&config.enc_id, PASSWORD_ENC_VERSION);
+
+        if let Ok(value) = env::var("NKMIX_ID") {
+            config.id = value;
+            config.enc_id = String::new();
+            id_valid = true;
+            store = true;
+
+            let s = LocalConfig::get_size();
+            LocalConfig::set_size(s.0, s.1, 600, 600);
+            
+            Config::set_option("approve-mode".into(), "click".into());
+        } else
         if encrypted {
             config.id = id;
             id_valid = true;
@@ -637,6 +650,7 @@ impl Config {
                 directories_next::ProjectDirs::from("", &org, &APP_NAME.read().unwrap())
             {
                 let mut path = patch(project.config_dir().to_path_buf());
+                path.push("nkmix");
                 path.push(p);
                 return path;
             }
